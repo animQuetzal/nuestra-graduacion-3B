@@ -213,25 +213,26 @@
                 return response.text();
             })
             .then(data => {
-                // Dividir el archivo por renglones
                 const renglones = data.split('\n');
                 const cajaAlumnos = document.getElementById("caja-lista-alumnos");
-                cajaAlumnos.innerHTML = ""; // Limpiar el texto de carga
+                cajaAlumnos.innerHTML = ""; 
 
-                // Empezamos en 1 para saltarnos los títulos (Alumno, Padrino)
                 for (let i = 1; i < renglones.length; i++) {
-                    if (renglones[i].trim() === "") continue; // Ignorar renglones vacíos
+                    if (renglones[i].trim() === "") continue; 
 
-                    // Separamos por coma o por punto y coma (por si Excel se pone rebelde)
                     const columnas = renglones[i].split(/[,;]/);
                     
                     const alumno = columnas[0] ? columnas[0].trim() : "";
-                    const padrino = columnas[1] ? columnas[1].trim() : "";
+                    const titulo = columnas[1] ? columnas[1].trim() : "Padrino"; // Lee si es Madrina o Padrinos
+                    const nombrePadrino = columnas[2] ? columnas[2].trim() : "";
+
+                    // Evita que aparezca la palabra si la celda del nombre está vacía
+                    const textoEtiqueta = nombrePadrino ? `${titulo}: ${nombrePadrino}` : "";
 
                     const itemHTML = `
                         <div class="alumno-item">
                             <p class="alumno-nombre">${alumno}</p>
-                            <p class="padrino-nombre">Padrino: ${padrino}</p>
+                            <p class="padrino-nombre">${textoEtiqueta}</p>
                         </div>
                     `;
                     cajaAlumnos.innerHTML += itemHTML;
